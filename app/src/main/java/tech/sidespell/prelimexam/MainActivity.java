@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity  implements CompoundButton.O
     private SeekBar mSbDelay;
     private TextView mTvSbDelay;
     private int time;
-
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity  implements CompoundButton.O
         setSupportActionBar(toolbar);
 
         findValues();
-
 
 
 
@@ -80,37 +79,34 @@ public class MainActivity extends AppCompatActivity  implements CompoundButton.O
 
             @Override
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
-                time = Integer.parseInt(mTvTime.getText().toString());
+
                 final Handler handler = new Handler();
-                Runnable runnable = null;
-                if (mBtnInc.isChecked()) {
+
+
                     runnable = new Runnable() {
                         @Override
                         public void run() {
-                            time += 1;
-                            mTvTime.setText(time + "");
-                            handler.postDelayed(this, progress);
+                            if (mBtnInc.isChecked()) {
+                                time = Integer.parseInt(mTvTime.getText().toString());
+                                time += 1;
+                                mTvTime.setText(time + "");
+                                handler.postDelayed(this, progress);
+                            } else if (mBtnDec.isChecked()) {
+                                time = Integer.parseInt(mTvTime.getText().toString());
+                                time -= 1;
+                                mTvTime.setText(time + "");
+                                handler.postDelayed(this, progress);
+                            }
+
                         }
                     };
 
-                } else if (mBtnDec.isChecked()) {
-                    runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            time -= 1;
-                            mTvTime.setText(time + "");
-                            handler.postDelayed(this, progress);
-                        }
-                    };
-
-                }
                 handler.postDelayed(runnable, 1000);
-            }
+                }
+            });
 
-        });
+        }
 
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
