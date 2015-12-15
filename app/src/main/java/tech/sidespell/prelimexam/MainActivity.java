@@ -3,10 +3,33 @@ package tech.sidespell.prelimexam;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.os.Handler;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener{
+
+    private int progress;
+    private RadioGroup mRgProcess;
+    private TextView mTvTime;
+    private RadioButton mBtnInc;
+    private RadioButton mBtnDec;
+    private Button mBtnSwitch;
+    private SeekBar mSbDelay;
+    private TextView mTvSbDelay;
+    private int time;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +38,78 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        findValues();
+
+
+
+
+    }
+
+    public void findValues() {
+        mRgProcess= (RadioGroup) findViewById(R.id.radioGroup);
+        mTvTime = (TextView) findViewById(R.id.textView);
+        mBtnInc = (RadioButton) findViewById(R.id.radioButton);
+        mBtnDec = (RadioButton) findViewById(R.id.radioButton2);
+        mBtnSwitch = (ToggleButton) findViewById(R.id.toggleButton);
+        //mBtnSwitch.setOnCheckedChangeListener(this);
+        mSbDelay = (SeekBar) findViewById(R.id.seekBar);
+        mTvSbDelay = (TextView) findViewById(R.id.textView2);
+
+        mSbDelay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                mTvSbDelay.setText(progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        mRgProcess.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+
+
+            @Override
+            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+                time = Integer.parseInt(mTvTime.getText().toString());
+                final Handler handler = new Handler();
+                Runnable runnable = null;
+                if (mBtnInc.isChecked()) {
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            time += 1;
+                            mTvTime.setText(time + "");
+                            handler.postDelayed(this, progress);
+                        }
+                    };
+
+                } else if (mBtnDec.isChecked()) {
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            time -= 1;
+                            mTvTime.setText(time + "");
+                            handler.postDelayed(this, progress);
+                        }
+                    };
+
+                }
+                handler.postDelayed(runnable, 1000);
+            }
+
+        });
+
+
     }
 
     @Override
@@ -37,5 +132,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton cb, boolean isChecked) {
+        if (isChecked) {
+
+        } else {
+        }
     }
 }

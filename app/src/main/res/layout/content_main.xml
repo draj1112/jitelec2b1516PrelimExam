@@ -62,13 +62,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="New RadioButton"/>
+            android:text="Increment"/>
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New RadioButton"/>
+            android:text="Decrement"/>
     </RadioGroup>
 
     <ToggleButton
@@ -77,5 +77,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:text="New ToggleButton"/>
+        android:text="START"/>
 </RelativeLayout>
